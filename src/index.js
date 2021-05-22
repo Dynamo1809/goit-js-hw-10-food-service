@@ -1,4 +1,5 @@
 'use strict';
+import './sass/main'
 import menuItemTpl from './templates/menu'
 import menu from './menu.json';
 
@@ -19,21 +20,28 @@ function createFoodMenuMarkup(foodItems) {
   return menuItemTpl(foodItems);
 }
 
-refs.themeSwitchToggle.addEventListener('change', themeSwitchToggleHandler)
+if(!localStorage.getItem('theme')){
+  localStorage.setItem('theme', Theme.LIGHT);
+}
+
+document.body.classList = localStorage.getItem('theme');
+
+if(document.body.classList.contains(Theme.DARK)) {
+ refs.themeSwitchToggle.checked = true ;
+}
+
+refs.themeSwitchToggle.addEventListener('change', themeSwitchToggleHandler);
 
 function themeSwitchToggleHandler (event) {
-  localStorage.setItem('toggle-checked', event.target.checked);
-  console.log(localStorage.getItem('toggle-checked'))
-  
-  if(localStorage.getItem('toggle-checked') === 'true'){
+  if(event.target.checked){
+    localStorage.setItem('theme', Theme.DARK);
     document.body.classList.remove(Theme.LIGHT);
     document.body.classList.add(Theme.DARK);
   }else{
+    localStorage.setItem('theme', Theme.LIGHT)
     document.body.classList.remove(Theme.DARK);
     document.body.classList.add(Theme.LIGHT);
   }
-  // event.target.checked = localStorage.getItem('toggle-checked')
-  // localStorage.setItem('toggle-checked', event.target.checked);
 }
 
 
